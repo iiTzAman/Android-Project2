@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/google_maps_menu"
+        android:icon="@drawable/google_maps"
+        android:title="Google Maps"
+        />
+    <item
+        android:id="@+id/google_places_menu"
+        android:icon="@drawable/google_places"
+        android:title="Google Places"
+        />
+    <item
+        android:id="@+id/email_menu"
+        android:icon="@drawable/baseline_email_24"
+        android:title="Email"
+        />
+    <item
+        android:id="@+id/about_menu"
+        android:icon="@drawable/settings"
+        android:title="About"
+        />
+</menu>
