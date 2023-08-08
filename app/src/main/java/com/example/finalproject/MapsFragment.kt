@@ -45,7 +45,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
         }
     }
 
-    private fun sendDataToActivity(data: LatLng) {
+    private fun sendDataToActivity(data: latLngAddress) {
         dataPassListener?.onDataPassed(data)
     }
 
@@ -91,15 +91,19 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
 
     }
 
+    data class latLngAddress(val latitude: Double, val longitude: Double, val address: String?)
+
+
     private fun placeMarkerOnMap(currentLatLng: LatLng){
         val addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1)
-        sendDataToActivity(currentLatLng)
         val addressText = if (addresses?.isNotEmpty() == true) {
             addresses?.get(0)?.getAddressLine(0)
         } else {
             "Address not available"
         }
         val markerOption = MarkerOptions().position(currentLatLng)
+        val emailDetails = latLngAddress(currentLatLng.latitude, currentLatLng.longitude, addressText)
+        sendDataToActivity(emailDetails)
         markerOption.title("$addressText")
         markerOption.snippet("Lat: %.4f, Lng: %.4f".format(currentLatLng.latitude, currentLatLng.longitude))
         googleMap.addMarker(markerOption)

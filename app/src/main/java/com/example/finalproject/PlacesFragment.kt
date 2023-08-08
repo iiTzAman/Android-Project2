@@ -34,9 +34,6 @@ class PlacesFragment : Fragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var recyclerView: RecyclerView
-    private lateinit var googleMap: GoogleMap
-    private lateinit var lastLocation: Location
-    private lateinit var currentLatLng: LatLng
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +42,6 @@ class PlacesFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_places, container, false)
         recyclerView = rootView.findViewById(R.id.recyclerView)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
         fetchNearbyPlaces()
         return rootView
     }
@@ -53,12 +49,10 @@ class PlacesFragment : Fragment() {
         GlobalScope.launch(Dispatchers.IO) {
             val lat = arguments?.getString("lat")
             val lon = arguments?.getString("long")
-            val latitude = lat
-            val longitude = lon
             val apiKey = "AIzaSyDg0NyQJ4tES9a89a8hre15cTPaCTEIF0I"
             val radius = 1000
             val url =
-                "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$latitude,$longitude&radius=$radius&type=restaurant&key=$apiKey"
+                "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lon&radius=$radius&type=restaurant&key=$apiKey"
             val connection = URL(url).openConnection() as HttpURLConnection
             val response = connection.inputStream.bufferedReader().use(BufferedReader::readText)
 

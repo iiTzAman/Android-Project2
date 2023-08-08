@@ -8,17 +8,19 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 
 class MainActivity : AppCompatActivity(), DataPassListener {
     private lateinit var fragmentManager: FragmentManager
     private lateinit var currentLatitude: String
     private lateinit var currentLongitude: String
+    private lateinit var currentAddress: String
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferencesManager = SharedPreferencesManager(this)
         replaceFragment(MapsFragment())
         Places.initialize(applicationContext, "AIzaSyDg0NyQJ4tES9a89a8hre15cTPaCTEIF0I")
 
@@ -37,13 +39,10 @@ class MainActivity : AppCompatActivity(), DataPassListener {
                 true
             }
             R.id.google_places_menu -> {
-                val currentLat = currentLatitude
-                val currentLon = currentLongitude
                 val fragment = PlacesFragment()
-
                 val bundle = Bundle()
-                bundle.putString("lat", currentLat)
-                bundle.putString("long", currentLon)
+                bundle.putString("lat", currentLatitude)
+                bundle.putString("long", currentLongitude)
                 fragment.arguments = bundle
 
                 supportFragmentManager.beginTransaction()
@@ -51,16 +50,29 @@ class MainActivity : AppCompatActivity(), DataPassListener {
                     .commit()
                 true
             }
-            R.id.email_menu -> Toast.makeText(this, "Maps Selected", Toast.LENGTH_SHORT).show()
+            R.id.email_menu -> {
+                val fragment = SendEmailFragment()
+                val bundle = Bundle()
+                bundle.putString("lat", currentLatitude)
+                bundle.putString("long", currentLongitude)
+                bundle.putString("address", currentAddress)
+                fragment.arguments = bundle
+
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit()
+            }
             R.id.about_menu -> Toast.makeText(this, "Maps Selected", Toast.LENGTH_SHORT).show()
+
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDataPassed(data: LatLng) {
+    override fun onDataPassed(data: MapsFragment.latLngAddress) {
         Log.d("Received LatLNG","$data")
         currentLatitude = data.latitude.toString()
         currentLongitude = data.longitude.toString()
+        currentAddress = data.address.toString()
     }
 
     private fun replaceFragment(fragment: Fragment) {
