@@ -1,5 +1,6 @@
 package com.example.finalproject
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.Locale
+import androidx.fragment.app.activityViewModels
+
 
 class MapsFragment : Fragment() , OnMapReadyCallback {
 
@@ -33,7 +36,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
     private lateinit var geocoder: Geocoder
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        const val LOCATION_PERMISSION_REQUEST_CODE = 1001
     }
 
     override fun onCreateView(
@@ -81,15 +84,20 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
     private fun placeMarkerOnMap(currentLatLng: LatLng){
         val addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1)
 
-        val addressText = if (addresses!!.isNotEmpty()) {
-            addresses!![0]?.getAddressLine(0)
+        val addressText = if (addresses?.isNotEmpty() == true) {
+            addresses?.get(0)?.getAddressLine(0)
         } else {
             "Address not available"
         }
-            val markerOption = MarkerOptions().position(currentLatLng)
-            markerOption.title("$addressText")
-            markerOption.snippet("Lat: ${currentLatLng.latitude}, Lng: ${currentLatLng.longitude}")
-            googleMap.addMarker(markerOption)
+        val markerOption = MarkerOptions().position(currentLatLng)
+        markerOption.title("$addressText")
+        markerOption.snippet("Lat: %.4f, Lng: %.4f".format(currentLatLng.latitude, currentLatLng.longitude))
+        googleMap.addMarker(markerOption)
+
+//        val intent = Intent(activity, MainActivity::class.java)
+//        intent.putExtra("currentLatitude", currentLatLng.latitude)
+//        intent.putExtra("currentLongitude", currentLatLng.longitude)
+//        startActivity(intent)
     }
 
     override fun onResume() {
