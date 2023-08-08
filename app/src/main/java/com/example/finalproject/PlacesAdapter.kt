@@ -11,9 +11,11 @@ RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder>() {
 
     inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val placeNameTextView: TextView = itemView.findViewById(R.id.placeNameTextView)
+        private val placeAddressTextView: TextView = itemView.findViewById(R.id.placeAddressTextView)
 
         fun bind(place: Place) {
             placeNameTextView.text = place.name
+            placeAddressTextView.text = place.address
         }
     }
 

@@ -45,19 +45,20 @@ class PlacesFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_places, container, false)
         recyclerView = rootView.findViewById(R.id.recyclerView)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
         fetchNearbyPlaces()
         return rootView
     }
-
     private fun fetchNearbyPlaces() {
         GlobalScope.launch(Dispatchers.IO) {
-            val latitude = "51.494"
-            val longitude = "0.130"
+            val lat = arguments?.getString("lat")
+            val lon = arguments?.getString("long")
+            val latitude = lat
+            val longitude = lon
             val apiKey = "AIzaSyDg0NyQJ4tES9a89a8hre15cTPaCTEIF0I"
             val radius = 1000
             val url =
                 "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$latitude,$longitude&radius=$radius&type=restaurant&key=$apiKey"
-            Log.d("Lat is here", "$latitude")
             val connection = URL(url).openConnection() as HttpURLConnection
             val response = connection.inputStream.bufferedReader().use(BufferedReader::readText)
 
