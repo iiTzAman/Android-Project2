@@ -62,8 +62,12 @@ class MainActivity : AppCompatActivity(), DataPassListener {
                     .replace(R.id.container, fragment)
                     .commit()
             }
-            R.id.about_menu -> Toast.makeText(this, "Maps Selected", Toast.LENGTH_SHORT).show()
-
+            R.id.about_menu -> {
+                val fragment = AboutFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

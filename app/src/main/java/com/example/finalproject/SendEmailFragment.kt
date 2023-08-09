@@ -35,7 +35,6 @@ class SendEmailFragment : Fragment() {
         rootView.findViewById<Button>(R.id.sendEmailButton).setOnClickListener {
             sendEmail()
         }
-
         return rootView
     }
 
@@ -48,14 +47,18 @@ class SendEmailFragment : Fragment() {
 
         val emailSubject = "Location Information"
         val emailText = "Latitude: $lat\nLongitude: $lon\nAddress: $address"
-        val mailtoUrl = "mailto:$emailAddress?subject=$emailSubject&body=$emailText"
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(mailtoUrl)
+        val mailtoUrl = "mailto:"
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse(mailtoUrl)
+            putExtra(Intent.EXTRA_EMAIL,address)
+            putExtra(Intent.EXTRA_SUBJECT,emailSubject)
+            putExtra(Intent.EXTRA_TEXT,emailText)
+        }
 
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(intent)
         } else {
-            Toast.makeText(requireContext(), "No browser app installed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No Email app installed", Toast.LENGTH_SHORT).show()
         }
     }
 }
