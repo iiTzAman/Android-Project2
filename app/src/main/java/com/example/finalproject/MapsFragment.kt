@@ -27,8 +27,8 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
 
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
-    private lateinit var lastLocation: Location
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastestLocation: Location
+    private lateinit var fusedLocation: FusedLocationProviderClient
     private lateinit var geocoder: Geocoder
     private var dataPassListener: DataPassListener? = null
 
@@ -58,7 +58,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
         mapView = rootView.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocation = LocationServices.getFusedLocationProviderClient(requireContext())
         geocoder = Geocoder(requireContext(), Locale.getDefault())
         return rootView
     }
@@ -73,9 +73,9 @@ class MapsFragment : Fragment() , OnMapReadyCallback {
         ) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isZoomControlsEnabled = true
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            fusedLocation.lastLocation.addOnSuccessListener { location ->
                 if (location != null){
-                    lastLocation = location
+                    lastestLocation = location
                     val currentLatLong = LatLng(location.latitude, location.longitude)
                     placeMarkerOnMap(currentLatLong)
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong,12f))

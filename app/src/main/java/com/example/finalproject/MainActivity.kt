@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.libraries.places.api.Places
 
 class MainActivity : AppCompatActivity(), DataPassListener {
     private lateinit var fragmentManager: FragmentManager
-    private lateinit var currentLatitude: String
-    private lateinit var currentLongitude: String
+    private lateinit var currentLat: String
+    private lateinit var currentLong: String
     private lateinit var currentAddress: String
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
 
@@ -41,8 +40,8 @@ class MainActivity : AppCompatActivity(), DataPassListener {
             R.id.google_places_menu -> {
                 val fragment = PlacesFragment()
                 val bundle = Bundle()
-                bundle.putString("lat", currentLatitude)
-                bundle.putString("long", currentLongitude)
+                bundle.putString("lat", currentLat)
+                bundle.putString("long", currentLong)
                 fragment.arguments = bundle
 
                 supportFragmentManager.beginTransaction()
@@ -53,8 +52,8 @@ class MainActivity : AppCompatActivity(), DataPassListener {
             R.id.email_menu -> {
                 val fragment = SendEmailFragment()
                 val bundle = Bundle()
-                bundle.putString("lat", currentLatitude)
-                bundle.putString("long", currentLongitude)
+                bundle.putString("lat", currentLat)
+                bundle.putString("long", currentLong)
                 bundle.putString("address", currentAddress)
                 fragment.arguments = bundle
 
@@ -74,8 +73,8 @@ class MainActivity : AppCompatActivity(), DataPassListener {
 
     override fun onDataPassed(data: MapsFragment.latLngAddress) {
         Log.d("Received LatLNG","$data")
-        currentLatitude = data.latitude.toString()
-        currentLongitude = data.longitude.toString()
+        currentLat = data.latitude.toString()
+        currentLong = data.longitude.toString()
         currentAddress = data.address.toString()
     }
 

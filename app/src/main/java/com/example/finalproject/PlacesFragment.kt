@@ -1,47 +1,34 @@
 package com.example.finalproject
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.finalproject.PlacesAdapter
-import com.example.finalproject.Place
-import com.example.finalproject.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.math.log
 
 class PlacesFragment : Fragment() {
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var fusedLocation: FusedLocationProviderClient
+    private lateinit var recycler: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_places, container, false)
-        recyclerView = rootView.findViewById(R.id.recyclerView)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        recycler = rootView.findViewById(R.id.recyclerView)
+        fusedLocation = LocationServices.getFusedLocationProviderClient(requireContext())
         fetchNearbyPlaces()
         return rootView
     }
@@ -59,8 +46,8 @@ class PlacesFragment : Fragment() {
             val placesList = parsePlacesResponse(response)
             withContext(Dispatchers.Main) {
                 val adapter = PlacesAdapter(placesList)
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter = adapter
+                recycler.layoutManager = LinearLayoutManager(requireContext())
+                recycler.adapter = adapter
             }
         }
     }

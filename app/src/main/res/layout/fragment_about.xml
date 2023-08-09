@@ -14,6 +14,7 @@
         android:layout_marginTop="73dp"
         android:layout_marginEnd="183dp"
         android:text="ABOUT"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,13 +69,14 @@
 
     <TextView
         android:id="@+id/textView11"
-        android:layout_width="326dp"
-        android:layout_height="62dp"
+        android:layout_width="328dp"
+        android:layout_height="81dp"
         android:layout_marginStart="42dp"
         android:layout_marginTop="167dp"
         android:layout_marginEnd="43dp"
         android:text="Launched in 2023, this app allows you to view your current location, view a list of places near your current location and share your location to your friends through email."
         android:textAlignment="center"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
